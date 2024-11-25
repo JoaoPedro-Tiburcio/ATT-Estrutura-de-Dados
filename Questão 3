@@ -77,3 +77,12 @@ def compare_search_algorithms():
 # Executa a comparação
 compare_search_algorithms()
 
+Análise de Desempenho - Tamanho Ideal do Salto: 
+O tamanho do salto √𝑛 é considerado ideal, pois minimiza a soma de dois fatores:
+O número de saltos necessários: 𝑛/√𝑛 = √𝑛.
+O número de comparações internas após encontrar o intervalo: √𝑛.
+Portanto, a complexidade do Jump Search é 𝑂(√𝑛).
+
+Complexidade de Tempo Comparativa:
+Jump Search: 𝑂(√𝑛). Funciona bem para listas de tamanho médio a grande, onde a lista é ordenada.
+Binary Search: 𝑂(log 𝑛). Funciona melhor para listas muito grandes, onde a complexidade logarítmica faz uma diferença significativa.
