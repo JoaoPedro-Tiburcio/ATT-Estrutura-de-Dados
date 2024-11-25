@@ -1,0 +1,54 @@
+Implementação do Interpolation Search -
+def interpolation_search(arr, target):
+    low = 0
+    high = len(arr) - 1
+    while low <= high and arr[low] <= target <= arr[high]:
+        if low == high:
+            if arr[low] == target:
+                return low
+            return -1
+
+        pos = low + ((target - arr[low]) * (high - low) // (arr[high] - arr[low]))
+
+        if arr[pos] == target:
+            return pos
+        elif arr[pos] < target:
+            low = pos + 1  
+        else:
+            high = pos - 1  
+    return -1  
+
+Comparação com o Binary Search
+def compare_search_algorithms():
+    # Lista ordenada com intervalos uniformes
+    uniform_list = list(range(0, 1000, 10))  # Lista com intervalos uniformes de 10
+    # Lista ordenada com intervalos não uniformes
+    non_uniform_list = [0, 5, 9, 20, 35, 50, 75, 120, 175, 250, 330, 420, 515, 610, 710, 815, 930]
+
+    # Testando ambas as listas com ambos os algoritmos
+    targets = [50, 250, 930, 1000]  # 1000 não está presente, é um alvo fora do range
+
+    print("Comparação para lista com intervalos uniformes:")
+    for target in targets:
+        bs_index = binary_search(uniform_list, target)
+        is_index = interpolation_search(uniform_list, target)
+        print(f"Target {target} | Binary Search: {bs_index}, Interpolation Search: {is_index}")
+
+    print("\nComparação para lista com intervalos não uniformes:")
+    for target in targets:
+        bs_index = binary_search(non_uniform_list, target)
+        is_index = interpolation_search(non_uniform_list, target)
+        print(f"Target {target} | Binary Search: {bs_index}, Interpolation Search: {is_index}")
+
+compare_search_algorithms()
+
+Casos em que o Interpolation Search é mais eficiente que o Binary Search
+O Interpolation Search é geralmente mais eficiente do que o Binary Search quando a lista possui elementos distribuídos de forma uniforme, ou quase uniforme. Isso ocorre porque o Interpolation Search usa a fórmula de interpolação para estimar diretamente a posição do elemento alvo, enquanto o Binary Search sempre divide a lista pela metade, independentemente da distribuição dos valores.
+
+Situações em que o Interpolation Search é mais eficiente:
+Distribuição Uniforme de Dados - Em listas ordenadas onde os elementos têm intervalos regulares (por exemplo, [0, 10, 20, 30, ..., 990]), o Interpolation Search pode localizar o alvo em tempo constante, especialmente quando o alvo está próximo do valor estimado.
+O Binary Search, por outro lado, sempre requer um número fixo de divisões, independentemente da distribuição.
+Grande Tamanho da Lista - Para listas muito grandes, o Interpolation Search pode encontrar elementos rapidamente devido à sua estimativa de posição. Ele pode, em alguns casos, funcionar em tempo O(log(log(n))) para listas com distribuição uniforme, enquanto o Binary Search é O(log(n)).
+
+Situações em que o Interpolation Search não é eficiente:
+Distribuição Não Uniforme - Se os dados não forem distribuídos uniformemente, a estimativa de posição pode ser incorreta, resultando em várias iterações adicionais. Nesse caso, o Binary Search tende a ser mais confiável e consistente.
