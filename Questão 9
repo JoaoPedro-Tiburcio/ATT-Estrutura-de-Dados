@@ -1,0 +1,58 @@
+Implementação do Quick Sort -
+def quick_sort(arr, pivot_choice="first"):
+    """
+    Implementação do Quick Sort com diferentes critérios para escolha do pivô.
+    
+    Args:
+    - arr: Lista de números a ser ordenada.
+    - pivot_choice: Critério para escolha do pivô. 
+                    Valores possíveis: 'first', 'last', 'middle'.
+    """
+    if len(arr) <= 1:
+        return arr
+
+    # Escolha do pivô
+    if pivot_choice == "first":
+        pivot = arr[0]
+    elif pivot_choice == "last":
+        pivot = arr[-1]
+    elif pivot_choice == "middle":
+        pivot = arr[len(arr) // 2]
+    else:
+        raise ValueError("Opção inválida para pivot_choice. Escolha 'first', 'last' ou 'middle'.")
+
+    # Particionamento
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+
+    # Chamada recursiva
+    return quick_sort(left, pivot_choice) + middle + quick_sort(right, pivot_choice)
+
+Teste com Diferentes Critérios de Pivô -
+def test_quick_sort():
+    # Listas de teste
+    test_cases = {
+        "Quase ordenada": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        "Completamente desordenada": [10, 1, 8, 3, 6, 9, 2, 4, 5, 7],
+        "Lista reversa": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    }
+
+    for description, arr in test_cases.items():
+        print(f"\n{description}:")
+        for pivot_choice in ["first", "last", "middle"]:
+            sorted_arr = quick_sort(arr, pivot_choice)
+            print(f"  Pivô '{pivot_choice}': {sorted_arr}")
+
+# Executa os testes
+test_quick_sort()
+
+Análise de Desempenho - 
+Listas Quase Ordenadas: Usar o primeiro ou o último elemento como pivô geralmente leva a um pior desempenho, pois o particionamento será altamente desequilibrado.
+Usar o elemento do meio tende a ser mais eficiente, resultando em particionamentos mais balanceados.
+
+Listas Completamente Desordenadas: Todos os critérios podem funcionar bem, mas o desempenho é sensível à distribuição dos valores.
+Escolher o elemento do meio como pivô geralmente resulta em particionamentos mais equilibrados.
+
+Listas Reversas: Semelhante às listas quase ordenadas, o uso do primeiro ou do último elemento como pivô tende a ser ineficiente.
+O elemento do meio novamente oferece melhor desempenho.
