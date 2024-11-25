@@ -1,0 +1,92 @@
+Merge Sort -
+import matplotlib.pyplot as plt
+
+def plot_merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+        plot_merge_sort(L)
+        plot_merge_sort(R)
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+            plt.bar(range(len(arr)), arr, color='blue')
+            plt.pause(0.5)
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+            plt.bar(range(len(arr)), arr, color='blue')
+            plt.pause(0.5)
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+            plt.bar(range(len(arr)), arr, color='blue')
+            plt.pause(0.5)
+    plt.bar(range(len(arr)), arr, color='blue')
+    plt.pause(0.5)
+
+# Dados de exemplo
+arr = [38, 27, 43, 3, 9, 82, 10]
+plt.ion()
+plt.figure()
+plot_merge_sort(arr)
+plt.show()
+
+Quick Sort -
+import matplotlib.pyplot as plt
+
+def plot_quick_sort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+        plot_quick_sort(arr, low, pi - 1)
+        plot_quick_sort(arr, pi + 1, high)
+
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+        plt.bar(range(len(arr)), arr, color='green')
+        plt.pause(0.5)
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    plt.bar(range(len(arr)), arr, color='green')
+    plt.pause(0.5)
+    return i + 1
+
+# Dados de exemplo
+arr = [38, 27, 43, 3, 9, 82, 10]
+plt.ion()
+plt.figure()
+plot_quick_sort(arr, 0, len(arr) - 1)
+plt.show()
+
+Selection Sort -
+import matplotlib.pyplot as plt
+
+def plot_selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i
+        for j in range(i + 1, len(arr)):
+            if arr[min_idx] > arr[j]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+        plt.bar(range(len(arr)), arr, color='red')
+        plt.pause(0.5)
+
+# Dados de exemplo
+arr = [38, 27, 43, 3, 9, 82, 10]
+plt.ion()
+plt.figure()
+plot_selection_sort(arr)
+plt.show()
