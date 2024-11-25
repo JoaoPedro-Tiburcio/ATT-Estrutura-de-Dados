@@ -1,22 +1,29 @@
 Implementação do Interpolation Search -
 def interpolation_search(arr, target):
+    # Definir os limites iniciais da busca
     low = 0
     high = len(arr) - 1
+
+    # Continua enquanto o intervalo de busca for válido e o alvo estiver dentro do range estimado
     while low <= high and arr[low] <= target <= arr[high]:
+        # Se low e high são iguais, apenas verifica o alvo
         if low == high:
             if arr[low] == target:
                 return low
             return -1
 
+        # Calcular a posição estimada usando interpolação
         pos = low + ((target - arr[low]) * (high - low) // (arr[high] - arr[low]))
 
+        # Verifica se encontrou o alvo
         if arr[pos] == target:
             return pos
         elif arr[pos] < target:
-            low = pos + 1  
+            low = pos + 1  # Procura na metade direita
         else:
-            high = pos - 1  
-    return -1  
+            high = pos - 1  # Procura na metade esquerda
+
+    return -1  # Retorna -1 se o elemento não for encontrado
 
 Comparação com o Binary Search
 def compare_search_algorithms():
@@ -40,6 +47,7 @@ def compare_search_algorithms():
         is_index = interpolation_search(non_uniform_list, target)
         print(f"Target {target} | Binary Search: {bs_index}, Interpolation Search: {is_index}")
 
+# Chamada da função de comparação
 compare_search_algorithms()
 
 Casos em que o Interpolation Search é mais eficiente que o Binary Search
