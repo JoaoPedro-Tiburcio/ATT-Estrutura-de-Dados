@@ -1,0 +1,101 @@
+Implementação -
+# Merge Sort para ordenar palavras
+def merge_sort(words):
+    """
+    Ordena uma lista de palavras em ordem alfabética usando Merge Sort.
+    
+    Args:
+    words (list): Lista de palavras.
+    
+    Retorna:
+    list: Lista ordenada em ordem alfabética.
+    """
+    if len(words) <= 1:
+        return words
+
+    mid = len(words) // 2
+    left = merge_sort(words[:mid])
+    right = merge_sort(words[mid:])
+
+    return merge(left, right)
+
+def merge(left, right):
+    sorted_list = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i].lower() <= right[j].lower():
+            sorted_list.append(left[i])
+            i += 1
+        else:
+            sorted_list.append(right[j])
+            j += 1
+
+    sorted_list.extend(left[i:])
+    sorted_list.extend(right[j:])
+
+    return sorted_list
+
+# Quick Sort para ordenar palavras
+def quick_sort(words):
+    """
+    Ordena uma lista de palavras em ordem alfabética usando Quick Sort.
+    
+    Args:
+    words (list): Lista de palavras.
+    
+    Retorna:
+    list: Lista ordenada em ordem alfabética.
+    """
+    if len(words) <= 1:
+        return words
+
+    pivot = words[len(words) // 2]
+    less = [word for word in words if word.lower() < pivot.lower()]
+    equal = [word for word in words if word.lower() == pivot.lower()]
+    greater = [word for word in words if word.lower() > pivot.lower()]
+
+    return quick_sort(less) + equal + quick_sort(greater)
+
+# Binary Search para encontrar uma palavra
+def binary_search(words, target):
+    """
+    Busca binária para encontrar uma palavra em uma lista ordenada.
+    
+    Args:
+    words (list): Lista de palavras ordenada.
+    target (str): Palavra a ser encontrada.
+    
+    Retorna:
+    int: Índice da palavra encontrada ou -1 se não estiver na lista.
+    """
+    low, high = 0, len(words) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if words[mid].lower() == target.lower():
+            return mid
+        elif words[mid].lower() < target.lower():
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+# Exemplo de uso
+words = ["banana", "apple", "cherry", "mango", "grape", "kiwi"]
+target_word = "mango"
+
+# Ordenação com Merge Sort
+sorted_words_merge = merge_sort(words)
+print(f"Lista ordenada (Merge Sort): {sorted_words_merge}")
+
+# Ordenação com Quick Sort
+sorted_words_quick = quick_sort(words)
+print(f"Lista ordenada (Quick Sort): {sorted_words_quick}")
+
+# Buscar a palavra usando Binary Search
+index = binary_search(sorted_words_merge, target_word)
+
+if index != -1:
+    print(f"A palavra '{target_word}' foi encontrada no índice {index}.")
+else:
+    print(f"A palavra '{target_word}' não foi encontrada na lista.")
