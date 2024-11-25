@@ -1,1 +1,79 @@
+Implementação do Jump Search -
+import math
+import time
+
+def jump_search(arr, target):
+    n = len(arr)
+    # Determina o tamanho ideal do salto
+    step = int(math.sqrt(n))
+    
+    # Inicializa os blocos
+    prev = 0
+    while arr[min(step, n) - 1] < target:
+        prev = step
+        step += int(math.sqrt(n))
+        if prev >= n:
+            return -1  # Se o alvo não estiver presente
+
+    # Busca linear dentro do bloco
+    for i in range(prev, min(step, n)):
+        if arr[i] == target:
+            return i
+
+    return -1
+
+# Função de Binary Search para comparação
+def binary_search(arr, left, right, target):
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+Código de Teste de Desempenho -
+import random
+import time
+# Função para comparar Jump Search e Binary Search
+def compare_search_algorithms():
+    sizes = [10**3, 10**4, 10**5, 10**6]  # Tamanhos das listas
+    results = []
+
+    for size in sizes:
+        # Gera uma lista ordenada de tamanho 'size'
+        lista = sorted(random.sample(range(1, size * 10), size))
+        target = lista[random.randint(0, size - 1)]  # Seleciona um elemento aleatório da lista para a busca
+
+        # Mede o tempo do Jump Search
+        start_time = time.time()
+        jump_result = jump_search(lista, target)
+        jump_time = time.time() - start_time
+
+        # Mede o tempo do Binary Search
+        start_time = time.time()
+        binary_result = binary_search(lista, 0, len(lista) - 1, target)
+        binary_time = time.time() - start_time
+
+        # Armazena os resultados
+        results.append({
+            'size': size,
+            'jump_time': jump_time,
+            'binary_time': binary_time,
+            'jump_result': jump_result,
+            'binary_result': binary_result
+        })
+
+    # Imprime os resultados
+    for result in results:
+        print(f"Tamanho da lista: {result['size']}")
+        print(f"Tempo Jump Search: {result['jump_time']:.6f} segundos")
+        print(f"Tempo Binary Search: {result['binary_time']:.6f} segundos")
+        print('-' * 40)
+
+# Executa a comparação
+compare_search_algorithms()
 
