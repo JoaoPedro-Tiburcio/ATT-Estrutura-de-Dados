@@ -1,0 +1,172 @@
+import time
+import random
+
+# Funções para contagem de comparações
+def compare(func):
+    def wrapper(*args, **kwargs):
+        wrapper.comparisons = 0
+        return func(*args, **kwargs)
+    return wrapper
+
+# Algoritmos de ordenação
+@compare
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+                shell_sort.comparisons += 1
+            arr[j] = temp
+        gap //= 2
+
+@compare
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+        merge_sort(L)
+        merge_sort(R)
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+            merge_sort.comparisons += 1
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+
+@compare
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i
+        for j in range(i + 1, len(arr)):
+            selection_sort.comparisons += 1
+            if arr[min_idx] > arr[j]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+@compare
+def quick_sort(arr):
+    quick_sort.comparisons = 0
+    def _quick_sort(items, low, high):
+        if low < high:
+            pi = partition(items, low, high)
+            _quick_sort(items, low, pi - 1)
+            _quick_sort(items, pi + 1, high)
+    def partition(items, low, high):
+        pivot = items[high]
+        i = low - 1
+        for j in range(low, high):
+            quick_sort.comparisons += 1
+            if items[j] <= pivot:
+                i += 1
+                items[i], items[j] = items[j], items[i]
+        items[i + 1], items[high] = items[high], items[i + 1]
+        return i + 1
+    _quick_sort(arr, 0, len(arr) - 1)
+
+# Algoritmos de busca
+def binary_search(arr, x):
+    low, high = 0, len(arr) - 1
+    comparisons = 0
+    while low <= high:
+        comparisons += 1
+        mid = (low + high) // 2
+        if arr[mid] == x:
+            return mid, comparisons
+        elif arr[mid] < x:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1, comparisons
+
+def interpolation_search(arr, x):
+    low, high = 0, len(arr) - 1
+    comparisons = 0
+    while low <= high and x >= arr[low] and x <= arr[high]:
+        comparisons += 1
+        if low == high:
+            if arr[low] == x:
+                return low, comparisons
+            return -1, comparisons
+        pos = low + ((high - low) // (arr[high] - arr[low]) * (x - arr[low]))
+        if arr[pos] == x:
+            return pos, comparisons
+        if arr[pos] < x:
+            low = pos + 1
+        else:
+            high = pos - 1
+    return -1, comparisons
+
+# Função para medir tempos e comparações
+def measure_time_and_comparisons(sort_function, arr):
+    start_time = time.time()
+    sort_function(arr.copy())
+    end_time = time.time()
+    return end_time - start_time, sort_function.comparisons
+
+def main():
+    array_size = 1000
+    random.seed(42)
+    arr = [random.randint(1, array_size) for _ in range(array_size)]
+    
+    print("Escolha o algoritmo de ordenação:")
+    print("1. Shell Sort")
+    print("2. Merge Sort")
+    print("3. Selection Sort")
+    print("4. Quick Sort")
+    sort_choice = int(input("Digite o número do algoritmo escolhido: "))
+    
+    sort_algorithms = [shell_sort, merge_sort, selection_sort, quick_sort]
+    sort_function = sort_algorithms[sort_choice - 1]
+    
+    print("Escolha o algoritmo de busca:")
+    print("1. Binary Search")
+    print("2. Interpolation Search")
+    search_choice = int(input("Digite o número do algoritmo escolhido: "))
+    
+    search_algorithms = [binary_search, interpolation_search]
+    search_function = search_algorithms[search_choice - 1]
+    
+    element_to_search = int(input("Digite o elemento a ser buscado: "))
+    
+    # Ordenar a lista
+    sort_time, sort_comparisons = measure_time_and_comparisons(sort_function, arr)
+    sorted_arr = arr.copy()
+    sort_function(sorted_arr)
+    
+    # Buscar o elemento
+    search_time = time.time()
+    position, search_comparisons = search_function(sorted_arr, element_to_search)
+    search_time = time.time() - search_time
+    
+    print(f"Algoritmo de Ordenação: {sort_function.__name__}")
+    print(f"Tempo de Ordenação: {sort_time:.5f} segundos")
+    print(f"Comparações de Ordenação: {sort_comparisons}")
+    
+    print(f"Algoritmo de Busca: {search_function.__name__}")
+    if position != -1:
+        print(f"Elemento encontrado na posição {position}")
+    else:
+        print("Elemento não encontrado")
+    print(f"Tempo de Busca: {search_time:.5f} segundos")
+    print(f"Comparações de Busca: {search_comparisons}")
+
+if __name__ == "__main__":
+    main()
