@@ -1,58 +1,119 @@
-Implementação do Quick Sort -
-def quick_sort(arr, pivot_choice="first"):
+Implementação de Radix Sort na Base 10 - 
+def counting_sort(arr, exp):
     """
-    Implementação do Quick Sort com diferentes critérios para escolha do pivô.
-    
-    Args:
-    - arr: Lista de números a ser ordenada.
-    - pivot_choice: Critério para escolha do pivô. 
-                    Valores possíveis: 'first', 'last', 'middle'.
+    Counting Sort adaptado para Radix Sort.
+    Ordena os números com base no dígito atual (exp).
     """
-    if len(arr) <= 1:
-        return arr
+    n = len(arr)
+    output = [0] * n  # Array de saída
+    count = [0] * 10  # Contagem para dígitos 0-9
 
-    # Escolha do pivô
-    if pivot_choice == "first":
-        pivot = arr[0]
-    elif pivot_choice == "last":
-        pivot = arr[-1]
-    elif pivot_choice == "middle":
-        pivot = arr[len(arr) // 2]
-    else:
-        raise ValueError("Opção inválida para pivot_choice. Escolha 'first', 'last' ou 'middle'.")
+    # Conta a ocorrência de cada dígito
+    for i in arr:
+        index = (i // exp) % 10
+        count[index] += 1
 
-    # Particionamento
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
+    # Atualiza count[i] para indicar as posições reais dos dígitos
+    for i in range(1, 10):
+        count[i] += count[i - 1]
 
-    # Chamada recursiva
-    return quick_sort(left, pivot_choice) + middle + quick_sort(right, pivot_choice)
+    # Constrói o array de saída
+    for i in range(n - 1, -1, -1):
+        index = (arr[i] // exp) % 10
+        output[count[index] - 1] = arr[i]
+        count[index] -= 1
 
-Teste com Diferentes Critérios de Pivô -
-def test_quick_sort():
+    # Copia os elementos ordenados para o array original
+    for i in range(n):
+        arr[i] = output[i]
+
+def radix_sort(arr):
+    """
+    Implementação do Radix Sort para números inteiros na base 10.
+    """
+    # Determina o maior número na lista para saber o número de dígitos
+    max_num = max(arr)
+
+    # Aplica counting_sort para cada dígito, com exp representando a posição do dígito
+    exp = 1
+    while max_num // exp > 0:
+        counting_sort(arr, exp)
+        exp *= 10
+
+Teste com Números de Diferentes Tamanhos -
+def test_radix_sort():
     # Listas de teste
-    test_cases = {
-        "Quase ordenada": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        "Completamente desordenada": [10, 1, 8, 3, 6, 9, 2, 4, 5, 7],
-        "Lista reversa": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    datasets = {
+        "2 dígitos": [34, 21, 55, 12, 99, 11, 56, 88, 70, 23],
+        "5 dígitos": [34567, 12345, 98765, 56789, 10001, 54321, 65432, 22222, 77777, 90000],
+        "10 dígitos": [1234567890, 9876543210, 1111111111, 2222222222, 3333333333, 4444444444, 5555555555],
     }
 
-    for description, arr in test_cases.items():
-        print(f"\n{description}:")
-        for pivot_choice in ["first", "last", "middle"]:
-            sorted_arr = quick_sort(arr, pivot_choice)
-            print(f"  Pivô '{pivot_choice}': {sorted_arr}")
+    for description, data in datasets.items():
+        print(f"\n{description} - Lista inicial: {data}")
+        radix_sort(data)
+        print(f"{description} - Lista ordenada: {data}")
 
 # Executa os testes
-test_quick_sort()
+test_radix_sort()
 
-Análise de Desempenho - 
-Listas Quase Ordenadas: Usar o primeiro ou o último elemento como pivô geralmente leva a um pior desempenho, pois o particionamento será altamente desequilibrado.
-Usar o elemento do meio tende a ser mais eficiente, resultando em particionamentos mais balanceados.
+Radix Sort na Base 2 -
+def counting_sort_binary(arr, bit_position):
+    """
+    Counting Sort adaptado para Radix Sort na base 2.
+    Ordena os números com base no bit atual.
+    """
+    n = len(arr)
+    output = [0] * n  # Array de saída
+    count = [0] * 2  # Contagem para bits 0 e 1
 
-Listas Completamente Desordenadas: Todos os critérios podem funcionar bem, mas o desempenho é sensível à distribuição dos valores.
-Escolher o elemento do meio como pivô geralmente resulta em particionamentos mais equilibrados.
+    # Conta a ocorrência de cada bit
+    for i in arr:
+        bit = (i >> bit_position) & 1
+        count[bit] += 1
 
-Listas Reversas: Semelhante às listas quase ordenadas, o uso do primeiro ou do último elemento como pivô tende a ser ineficiente.
-O elemento do meio novamente oferece melhor desempenho.
+    # Atualiza count[i] para indicar as posições reais dos bits
+    count[1] += count[0]
+
+    # Constrói o array de saída
+    for i in range(n - 1, -1, -1):
+        bit = (arr[i] >> bit_position) & 1
+        output[count[bit] - 1] = arr[i]
+        count[bit] -= 1
+
+    # Copia os elementos ordenados para o array original
+    for i in range(n):
+        arr[i] = output[i]
+
+def radix_sort_binary(arr):
+    """
+    Implementação do Radix Sort para números inteiros na base 2.
+    """
+    # Determina o maior número na lista para saber o número de bits necessários
+    max_num = max(arr)
+
+    # Aplica counting_sort_binary para cada bit
+    bit_position = 0
+    while (max_num >> bit_position) > 0:
+        counting_sort_binary(arr, bit_position)
+        bit_position += 1
+
+Teste com Base 2 -
+def test_radix_sort_binary():
+    data = [170, 45, 75, 90, 802, 24, 2, 66]
+    print("\nBase 2 - Lista inicial:", data)
+    radix_sort_binary(data)
+    print("Base 2 - Lista ordenada:", data)
+
+# Executa o teste
+test_radix_sort_binary()
+
+Como lida com diferentes bases
+O Radix Sort lida com diferentes bases ajustando a granularidade da ordenação em cada passo. Bases maiores (como 10) realizam menos iterações, mas consomem mais memória, enquanto bases menores (como 2) exigem mais iterações, mas podem ser mais eficientes dependendo do sistema. A escolha da base depende do tipo de dados e do ambiente de execução.
+
+
+
+
+
+
+
