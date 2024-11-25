@@ -1,0 +1,61 @@
+Algoritmos de Busca -
+
+Binary Search:
+Tempo: O(log n)
+Porque a cada iteração, o tamanho do problema é reduzido pela metade.
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Interpolation Search:
+Tempo: O(log log n) no melhor caso, O(n) no pior caso
+Se os dados forem uniformemente distribuídos, a busca pode ser extremamente eficiente.
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Jump Search:
+Tempo: O(√n)
+Divida a lista em blocos de tamanho √n e realize uma busca linear dentro do bloco.
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Exponential Search:
+Tempo: O(log n)
+Porque combina busca exponencial e busca binária.
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Algoritmos de Ordenação -
+Shell Sort:
+Tempo: Depende da sequência de intervalos utilizada. Em média, pode variar entre O(n log^2 n) e O(n^3/2).
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Merge Sort:
+Tempo: O(n log n)
+Porque divide a lista ao meio repetidamente e depois combina os resultados.
+Espaço: O(n)
+Porque requer espaço adicional para as sublistas.
+
+Selection Sort:
+Tempo: O(n^2)
+Porque precisa de n varreduras para encontrar o menor elemento e colocá-lo em ordem.
+Espaço: O(1)
+Porque utiliza uma quantidade constante de espaço adicional.
+
+Quick Sort:
+Tempo: O(n log n) em média, O(n^2) no pior caso
+Depende da escolha do pivô; no pior caso, pode degradar para tempo quadrático.
+Espaço: O(log n)
+Porque requer espaço para a pilha de recursão.
+
+Bucket Sort:
+Tempo: O(n + k), onde k é o número de baldes
+Assumindo distribuição uniforme, tempo linear.
+Espaço: O(n + k)
+Porque requer espaço adicional para os baldes.
+
+Radix Sort:
+Tempo: O(nk), onde k é o número de dígitos
+Cada dígito do número é ordenado separadamente.
+Espaço: O(n + k)
+Porque requer espaço adicional para os baldes.
