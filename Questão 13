@@ -1,0 +1,147 @@
+Implementação
+import time
+import random
+
+# Funções para contagem de comparações
+def compare(func):
+    def wrapper(*args, **kwargs):
+        wrapper.comparisons = 0
+        return func(*args, **kwargs)
+    return wrapper
+
+# Algoritmos de ordenação
+@compare
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+                shell_sort.comparisons += 1
+            arr[j] = temp
+        gap //= 2
+
+@compare
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+        merge_sort(L)
+        merge_sort(R)
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+            merge_sort.comparisons += 1
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+
+@compare
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i
+        for j in range(i + 1, len(arr)):
+            selection_sort.comparisons += 1
+            if arr[min_idx] > arr[j]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+@compare
+def quick_sort(arr):
+    quick_sort.comparisons = 0
+    def _quick_sort(items, low, high):
+        if low < high:
+            pi = partition(items, low, high)
+            _quick_sort(items, low, pi - 1)
+            _quick_sort(items, pi + 1, high)
+    def partition(items, low, high):
+        pivot = items[high]
+        i = low - 1
+        for j in range(low, high):
+            quick_sort.comparisons += 1
+            if items[j] <= pivot:
+                i += 1
+                items[i], items[j] = items[j], items[i]
+        items[i + 1], items[high] = items[high], items[i + 1]
+        return i + 1
+    _quick_sort(arr, 0, len(arr) - 1)
+
+@compare
+def bucket_sort(arr):
+    bucket_sort.comparisons = 0
+    bucket = []
+    slot_num = 10
+    for i in range(slot_num):
+        bucket.append([])
+
+    for j in arr:
+        index = int(slot_num * j / max(arr))
+        bucket_sort.comparisons += 1
+        bucket[index].append(j)
+
+    for i in range(slot_num):
+        bucket[i] = sorted(bucket[i])
+
+    k = 0
+    for i in range(slot_num):
+        for j in range(len(bucket[i])):
+            bucket_sort.comparisons += 1
+            arr[k] = bucket[i][j]
+            k += 1
+
+@compare
+def radix_sort(arr):
+    radix_sort.comparisons = 0
+    RADIX = 10
+    placement = 1
+    max_digit = max(arr)
+
+    while placement < max_digit:
+        buckets = [list() for _ in range(RADIX)]
+        for i in arr:
+            radix_sort.comparisons += 1
+            tmp = int((i / placement) % RADIX)
+            buckets[tmp].append(i)
+        a = 0
+        for b in range(RADIX):
+            buck = buckets[b]
+            for i in buck:
+                arr[a] = i
+                a += 1
+        placement *= RADIX
+
+# Função principal para medir tempos e comparações
+def measure_time_and_comparisons(sort_function, arr):
+    start_time = time.time()
+    sort_function(arr.copy())
+    end_time = time.time()
+    return end_time - start_time, sort_function.comparisons
+
+# Listas de tamanhos variados para teste
+array_sizes = [10, 100, 1000, 10000, 100000, 1000000]
+results = {}
+
+for size in array_sizes:
+    random.seed(42)
+    arr = [random.randint(1, size) for _ in range(size)]
+    print(f"\nTamanho da Lista: {size}")
+    for algo in [shell_sort, merge_sort, selection_sort, quick_sort, bucket_sort, radix_sort]:
+        time_taken, comparisons = measure_time_and_comparisons(algo, arr)
+        print(f"{algo.__name__} -> Tempo: {time_taken:.5f}s, Comparações: {comparisons}")
+
