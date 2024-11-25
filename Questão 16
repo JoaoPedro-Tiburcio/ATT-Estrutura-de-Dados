@@ -1,0 +1,38 @@
+Implementação de Binary Search para encontrar o ISBN -
+def binary_search_isbn(library_records, target_isbn):
+    """
+    Busca binária para encontrar um ISBN específico em uma lista ordenada.
+    
+    Args:
+    library_records (list): Lista ordenada de ISBNs.
+    target_isbn (str): ISBN do livro a ser encontrado.
+    
+    Retorna:
+    int: Índice do ISBN encontrado ou -1 se não estiver na lista.
+    """
+    low, high = 0, len(library_records) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if library_records[mid] == target_isbn:
+            return mid
+        elif library_records[mid] < target_isbn:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+# Exemplo de uso
+library_records = [
+    "9780131103627", "9780131103702", "9780131104150", 
+    "9780132350884", "9780134685991", "9781449331818"
+]
+target_isbn = "9780132350884"
+
+# Busca o ISBN na lista
+index = binary_search_isbn(library_records, target_isbn)
+
+# Resultado
+if index != -1:
+    print(f"O ISBN {target_isbn} foi encontrado no índice {index}.")
+else:
+    print(f"O ISBN {target_isbn} não foi encontrado na lista.")
