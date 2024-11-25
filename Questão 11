@@ -1,0 +1,78 @@
+Implementação do Ternary Seach -
+def ternary_search(arr, left, right, x):
+    """    
+    Args:
+    - arr: Lista ordenada de elementos.
+    - left: Índice inicial do intervalo de busca.
+    - right: Índice final do intervalo de busca.
+    - x: Elemento a ser buscado.
+    
+    Retorna:
+    - Índice do elemento se encontrado; -1 caso contrário.
+    """
+    while left <= right:
+        # Define os pontos m1 e m2
+        m1 = left + (right - left) // 3
+        m2 = right - (right - left) // 3
+
+        # Verifica se o elemento foi encontrado
+        if arr[m1] == x:
+            return m1
+        if arr[m2] == x:
+            return m2
+
+        # Decide o próximo intervalo de busca
+        if x < arr[m1]:
+            right = m1 - 1  # Busca no terço esquerdo
+        elif x > arr[m2]:
+            left = m2 + 1  # Busca no terço direito
+        else:
+            left = m1 + 1  # Busca no terço central
+            right = m2 - 1
+
+    return -1  # Elemento não encontrado
+
+Binary Search para comparação -
+def binary_search(arr, left, right, x):
+    while left <= right:
+        mid = left + (right - left) // 2
+
+        # Verifica se o elemento foi encontrado
+        if arr[mid] == x:
+            return mid
+        elif arr[mid] < x:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1  # Elemento não encontrado
+
+Teste e Comparação -
+import time
+
+# Função para comparar Ternary Search e Binary Search
+def compare_search_methods():
+    arr = sorted([i for i in range(1, 1000001)])  # Lista ordenada de 1 a 1.000.000
+    target = 999999  # Elemento a ser buscado
+
+    # Testa o Binary Search
+    start = time.time()
+    binary_result = binary_search(arr, 0, len(arr) - 1, target)
+    binary_time = time.time() - start
+
+    # Testa o Ternary Search
+    start = time.time()
+    ternary_result = ternary_search(arr, 0, len(arr) - 1, target)
+    ternary_time = time.time() - start
+
+    # Resultados
+    print(f"Binary Search - Resultado: {binary_result}, Tempo: {binary_time:.6f} segundos")
+    print(f"Ternary Search - Resultado: {ternary_result}, Tempo: {ternary_time:.6f} segundos")
+
+# Executa a comparação
+compare_search_methods()
+
+Quando o Ternary Search é Mais Eficiente:
+Em sistemas onde as comparações são muito rápidas (ou realizadas em paralelo), o impacto de mais divisões no Ternary Search pode ser reduzido.
+Em casos altamente otimizados, onde o custo de recálculo de índices é significativo, o Ternary Search pode apresentar leve vantagem devido a menos cálculos intermediários.
+
