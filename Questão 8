@@ -1,0 +1,74 @@
+Implementação do Bucket Sort para Números de Ponto Flutuante no Intervalo [0, 1) -
+def bucket_sort_floats(arr):
+    n = len(arr)
+    if n <= 1:
+        return arr
+
+    # Cria n baldes vazios
+    buckets = [[] for _ in range(n)]
+
+    # Distribui os elementos nos baldes com base no valor
+    for num in arr:
+        index = int(num * n)  # Calcula o índice do balde (0 a n-1)
+        buckets[index].append(num)
+
+    # Ordena individualmente cada balde usando Insertion Sort
+    for i in range(n):
+        buckets[i] = sorted(buckets[i])  # Pode usar qualquer algoritmo simples, como Insertion Sort
+
+    # Combina os baldes ordenados
+    sorted_arr = []
+    for bucket in buckets:
+        sorted_arr.extend(bucket)
+
+    return sorted_arr
+
+# Exemplo do uso para ponto flutuante
+numeros_floats = [0.78, 0.12, 0.56, 0.34, 0.9, 0.42, 0.65, 0.23, 0.01]
+print("Lista inicial (floats):", numeros_floats)
+ordenados_floats = bucket_sort_floats(numeros_floats)
+print("Lista ordenada (floats):", ordenados_floats)
+
+Como os Baldes são Preenchidos e Ordenados -
+Preenchimento:
+A lista é dividida em n baldes para n elementos.
+Para números no intervalo [0, 1), o cálculo do índice do balde é feito multiplicando o valor pelo número de baldes (int(num * n)).
+Cada elemento é colocado no balde correspondente ao seu valor calculado.
+
+Ordenação dos Baldes:
+Uma vez que os elementos são distribuídos nos baldes, cada balde é ordenado individualmente.
+Como a distribuição dos números dentro dos baldes tende a ser quase uniforme, o número de elementos em cada balde é pequeno, tornando eficiente a ordenação com algoritmos simples, como o Insertion Sort.
+
+Adaptação do Bucket Sort para Números Inteiros Positivos em Intervalos Maiores -
+def bucket_sort_integers(arr, bucket_size=10):
+    if len(arr) == 0:
+        return arr
+
+    # Determina o valor mínimo e máximo da lista
+    min_value, max_value = min(arr), max(arr)
+
+    # Calcula o número de baldes necessários
+    bucket_count = (max_value - min_value) // bucket_size + 1
+    buckets = [[] for _ in range(bucket_count)]
+
+    # Distribui os elementos nos baldes com base no tamanho do balde
+    for num in arr:
+        index = (num - min_value) // bucket_size
+        buckets[index].append(num)
+
+    # Ordena cada balde individualmente
+    for i in range(bucket_count):
+        buckets[i] = sorted(buckets[i])
+
+    # Combina os baldes ordenados
+    sorted_arr = []
+    for bucket in buckets:
+        sorted_arr.extend(bucket)
+
+    return sorted_arr
+
+# Exemplo de uso para números inteiros
+numeros_integers = [78, 12, 56, 34, 90, 42, 65, 23, 1, 89, 100, 7, 56]
+print("Lista inicial (inteiros):", numeros_integers)
+ordenados_integers = bucket_sort_integers(numeros_integers, bucket_size=10)
+print("Lista ordenada (inteiros):", ordenados_integers)
