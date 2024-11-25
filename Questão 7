@@ -1,0 +1,92 @@
+Implementação do Selection Sort -
+def selection_sort(arr):
+    n = len(arr)
+    
+    # Itera sobre toda a lista
+    for i in range(n):
+        # Assume que o primeiro elemento da parte não ordenada é o menor
+        min_index = i
+        # Encontra o menor elemento na parte não ordenada
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        
+        # Troca o menor elemento encontrado com o primeiro elemento da parte não ordenada
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+        
+        # Exibe o estado da lista após cada iteração
+        print(f"Iteração {i + 1}: {arr}")
+
+# Exemplo de uso
+numeros = [64, 25, 12, 22, 11]
+print("Lista inicial:", numeros)
+selection_sort(numeros)
+print("Lista ordenada:", numeros)
+
+Como a Lista é Organizada Passo a Passo -
+Lista Inicial: [64, 25, 12, 22, 11]
+
+Iteração 1: Menor elemento na parte não ordenada: 11.
+Troca 11 com 64.
+Lista: [11, 25, 12, 22, 64]
+
+Iteração 2: Menor elemento na parte não ordenada: 12.
+Troca 12 com 25.
+Lista: [11, 12, 25, 22, 64]
+
+Iteração 3: Menor elemento na parte não ordenada: 22.
+Troca 22 com 25.
+Lista: [11, 12, 22, 25, 64]
+
+Iteração 4: Menor elemento na parte não ordenada: 25.
+Mantém a posição, pois 25 já está no lugar correto.
+Lista: [11, 12, 22, 25, 64]
+
+Iteração 5: Apenas um elemento restante (64), já está ordenado.
+Lista Final: [11, 12, 22, 25, 64]
+
+Análise do Desempenho em Listas de Diferentes Tamanhos -
+Listas Pequenas:
+O Selection Sort funciona bem para listas pequenas, pois sua simplicidade compensa a baixa eficiência.
+A troca de elementos é fácil de entender, e o impacto de um algoritmo 𝑂(𝑛^2) em listas pequenas não é tão significativo.
+
+Listas Médias:
+O Selection Sort começa a perder eficiência em listas médias, onde o número de comparações cresce rapidamente.
+O algoritmo ainda é viável para listas de tamanhos moderados (centenas de elementos), mas o tempo de execução começa a se tornar um problema.
+
+Listas Grandes:
+Para listas grandes, o Selection Sort é significativamente ineficiente devido à sua complexidade 𝑂(𝑛^2).
+A quantidade de comparações e trocas necessárias torna o algoritmo impraticável em grandes volumes de dados.
+Algoritmos mais eficientes, como Merge Sort ou Quick Sort, são preferidos.
+
+Testando o Selection Sort em Diferentes Tamanhos -
+import random
+import time
+
+def test_selection_sort():
+    sizes = [10, 100, 1000, 5000]  # Tamanhos da lista para teste
+    results = []
+
+    for size in sizes:
+        # Gera uma lista aleatória de tamanho 'size'
+        arr = random.sample(range(1, size * 10), size)
+
+        # Mede o tempo de execução do Selection Sort
+        start_time = time.time()
+        selection_sort(arr.copy())
+        elapsed_time = time.time() - start_time
+
+        # Armazena os resultados
+        results.append({
+            'size': size,
+            'time': elapsed_time
+        })
+
+    # Exibe os resultados
+    for result in results:
+        print(f"Tamanho da lista: {result['size']}")
+        print(f"Tempo de execução do Selection Sort: {result['time']:.6f} segundos")
+        print('-' * 40)
+
+# Executa o teste
+test_selection_sort()
