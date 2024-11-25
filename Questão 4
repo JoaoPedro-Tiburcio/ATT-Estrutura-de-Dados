@@ -1,0 +1,55 @@
+Implementação do Exponential Search
+def binary_search(arr, left, right, target):
+    while left <= right:
+        mid = left + (right - left) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+def exponential_search(arr, target):
+    if len(arr) == 0:
+        return -1
+
+    if arr[0] == target:
+        return 0
+
+    index = 1
+    while index < len(arr) and arr[index] <= target:
+        index *= 2
+
+    return binary_search(arr, index // 2, min(index, len(arr) - 1), target)
+
+lista = [2, 3, 4, 10, 40, 55, 77, 89, 123, 456, 789, 1024, 2048, 4096]
+elemento = 456
+
+resultado = exponential_search(lista, elemento)
+if resultado != -1:
+    print(f"Elemento encontrado no índice: {resultado}")
+else:
+    print("Elemento não encontrado na lista.")
+
+Como o Exponential Search Funciona -
+Jump Search: O algoritmo começa a busca de forma semelhante ao Jump Search, ou seja, ele dá "saltos" exponenciais pela lista, duplicando o índice a cada iteração. Ele procura o intervalo onde o elemento pode estar localizado.
+Por exemplo, se o elemento estiver na posição 𝑘, o algoritmo procurará inicialmente nos índices 1, 2, 4, 8, 16, etc., até encontrar um índice que exceda 
+𝑘 ou que contenha o elemento procurado.
+Binary Search: Uma vez que o intervalo onde o elemento pode estar localizado é identificado, o algoritmo faz uma pesquisa binária (Binary Search) dentro desse intervalo para encontrar o elemento exato.
+
+Análise de Desempenho - Complexidade de Tempo
+Melhor caso: 𝑂(1), quando o elemento alvo é o primeiro elemento da lista.
+Pior caso: 𝑂(log 𝑖+log 𝑖), onde 𝑖 é o índice onde o elemento alvo está localizado. Isso equivale a 𝑂(log 𝑛) para listas de tamanho 𝑛.
+Caso médio: 𝑂(log 𝑛).
+
+Complexidade de Espaço - O algoritmo utiliza 𝑂(1) espaço adicional, o que significa que ele é eficiente em termos de uso de memória.
+
+Análise de Desempenho em Listas Grandes e Pequenas -
+Listas Pequenas:
+O Exponential Search pode ser um pouco excessivo para listas muito pequenas, especialmente se o elemento não está presente, já que a abordagem inicial de "saltos" pode resultar em verificações extras que poderiam ser evitadas com uma simples busca linear ou binária.
+No entanto, o desempenho é ainda aceitável devido à complexidade logarítmica da pesquisa binária.
+
+Listas Muito Grandes:
+Para listas ordenadas grandes, o Exponential Search é muito eficiente, pois rapidamente reduz o espaço de busca ao procurar intervalos exponenciais, antes de refinar a busca com a pesquisa binária.
+A combinação de "salto exponencial" e a pesquisa binária torna-o particularmente adequado para grandes listas ordenadas, onde é importante minimizar o número de comparações.
