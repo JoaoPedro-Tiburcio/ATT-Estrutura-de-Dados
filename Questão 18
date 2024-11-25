@@ -1,0 +1,45 @@
+Algoritmos de Ordenação Estáveis
+
+Merge Sort -
+Estável: Sim
+Explicação: O Merge Sort divide a lista em sublistas e as combina de forma a manter a ordem relativa dos elementos iguais.
+Exemplo -
+Lista original: [4a, 2, 3, 4b, 1]
+Lista ordenada: [1, 2, 3, 4a, 4b] (os elementos "4a" e "4b" mantêm sua ordem original)
+
+Bucket Sort -
+Estável: Sim
+Explicação: O Bucket Sort distribui os elementos em baldes que são ordenados individualmente, mantendo a ordem relativa dos elementos iguais quando os baldes são combinados.
+Exemplo -
+Lista original: [3, 3a, 2, 3b, 1]
+Lista ordenada: [1, 2, 3, 3a, 3b] (os elementos "3", "3a" e "3b" mantêm sua ordem original)
+
+Radix Sort -
+Estável: Sim
+Explicação: O Radix Sort ordena os elementos dígito por dígito, garantindo que a ordem relativa dos elementos iguais seja preservada.
+Exemplo -
+Lista original: [20, 20a, 10, 20b]
+Lista ordenada: [10, 20, 20a, 20b] (os elementos "20", "20a" e "20b" mantêm sua ordem original)
+
+Algoritmos de Ordenação Não Estáveis
+
+Shell Sort -
+Estável: Não
+Explicação: A ordem relativa dos elementos iguais pode ser alterada durante as trocas de elementos em diferentes intervalos.
+Exemplo -
+Lista original: [4a, 2, 3, 4b, 1]
+Lista ordenada: [1, 2, 3, 4b, 4a] (os elementos "4a" e "4b" tiveram sua ordem original alterada)
+
+Selection Sort -
+Estável: Não
+Explicação: A seleção do menor elemento e a troca com o elemento na posição correta pode alterar a ordem relativa dos elementos iguais.
+Exemplo -
+Lista original: [4a, 2, 3, 4b, 1]
+Lista ordenada: [1, 2, 3, 4b, 4a] (os elementos "4a" e "4b" tiveram sua ordem original alterada)
+
+Quick Sort -
+Estável: Não
+Explicação: Dependendo da implementação e escolha do pivô, a ordem relativa dos elementos iguais pode não ser preservada.
+Exemplo -
+Lista original: [4a, 2, 3, 4b, 1]
+Lista ordenada: [1, 2, 3, 4b, 4a] (os elementos "4a" e "4b" tiveram sua ordem original alterada)
