@@ -1,0 +1,59 @@
+import random
+import time
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def binary_search(arr, x):
+    # Implementação de Binary Search
+
+def interpolation_search(arr, lo, hi, x):
+    # Implementação de Interpolation Search
+
+def jump_search(arr, x, n):
+    # Implementação de Jump Search
+
+def exponential_search(arr, x):
+    # Implementação de Exponential Search
+
+def measure_time(func, arr, x):
+    start_time = time.time()
+    func(arr, x)
+    end_time = time.time()
+    return end_time - start_time
+
+# Tamanhos das listas
+list_sizes = [1000, 10000, 100000, 1000000]
+
+# Número de repetições para cada teste
+num_repetitions = 10
+
+# Dicionário para armazenar os resultados
+results = {'Tamanho da Lista': list_sizes}
+for func_name in ['binary_search', 'interpolation_search', 'jump_search', 'exponential_search']:
+    results[func_name] = []
+
+for size in list_sizes:
+    arr = sorted(random.sample(range(size * 10), size))  # Lista ordenada aleatória
+    x = random.choice(arr)  # Elemento a ser buscado
+    for _ in range(num_repetitions):
+        for func_name in results:
+            if func_name == 'Tamanho da Lista':
+                continue
+            func = globals()[func_name]
+            results[func_name].append(measure_time(func, arr, x))
+
+# Criando um DataFrame com os resultados
+df = pd.DataFrame(results)
+
+# Calculando a média dos tempos para cada algoritmo e tamanho de lista
+df = df.groupby('Tamanho da Lista').mean()
+
+# Exibindo a tabela
+print(df)
+
+# Criando um gráfico de linha para visualizar os resultados
+df.plot()
+plt.xlabel('Tamanho da Lista')
+plt.ylabel('Tempo de Execução (s)')
+plt.title('Comparação de Algoritmos de Busca')
+plt.show()
